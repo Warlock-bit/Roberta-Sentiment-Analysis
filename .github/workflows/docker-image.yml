@@ -1,0 +1,27 @@
+
+name: Build and package RoBERTa-sequencing to Dockerhub
+on: 
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Authenticate with Azure
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: set auto-install of extensions
+      run: az config set extension.use_dynamic_install=yes_without_prompt
+
+    - name: attach workspace
+      run: az ml folder attach -w "azure-learning-ws" -g "azure-learning-rg"
+
+    - name: retrieve the model
+      run: az ml model download -t "." --model-id "roberta-sequence:1"

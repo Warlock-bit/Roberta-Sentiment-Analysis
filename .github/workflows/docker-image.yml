@@ -21,7 +21,7 @@ jobs:
       run: az config set extension.use_dynamic_install=yes_without_prompt
       
     - name: check
-      run: az extension list-available
+      run: az extension add -n azure-cli-ml
 
     - name: attach workspace
       run: az ml folder attach -w "azure-learning-ws" -g "azure-learning-rg"

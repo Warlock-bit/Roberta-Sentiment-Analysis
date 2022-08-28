@@ -20,7 +20,7 @@ jobs:
     - name: set auto-install of extensions
       run: az config set extension.use_dynamic_install=yes_without_prompt
       
-    - name: check
+    - name: install azure cli ml extension
       run: az extension add -n azure-cli-ml
 
     - name: attach workspace
@@ -34,3 +34,12 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
+        
+    - name: Build and push flask-app container
+      uses: docker/build-push-action@v3
+      with:
+        context: ./
+        file: ./Dockerfile
+        push: true
+        tags: sumitbanerjee/robertasentimentanalysis:latest
+
